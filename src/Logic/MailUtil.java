@@ -1,3 +1,5 @@
+package Logic;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.logging.Level;

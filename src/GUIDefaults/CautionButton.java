@@ -1,9 +1,11 @@
+package GUIDefaults;
+
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CautionButton extends JButton {
-    CautionButton(String buttonText){
+    public CautionButton(String buttonText){
         setBackground(Colors.cautionColor);
         setForeground(Colors.buttonTextColor);
         setText(buttonText);

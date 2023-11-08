@@ -1,10 +1,12 @@
+import GUIDefaults.*;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,7 +17,7 @@ public class NewCustomerPanel extends JPanel {
     private DefaultButton confirmButton;
     private CautionButton cancelButton;
     private PrimaryPanel primary;
-    private Statement statement;
+    private SQLConnection sqlConnection;
     private BasicAlertPanel alertPanel1;
     private BasicAlertPanel alertPanel2;
     private Border blackLine;
@@ -38,7 +40,8 @@ public class NewCustomerPanel extends JPanel {
     private String[] meterList = {"Dial", "Digital"};
     DecimalFormat formatter = new DecimalFormat(".00");
 
-    NewCustomerPanel(PrimaryPanel primary) {
+    NewCustomerPanel(PrimaryPanel primary, SQLConnection sqlConnection) {
+        this.sqlConnection = sqlConnection;
         this.primary = primary;
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -222,8 +225,11 @@ public class NewCustomerPanel extends JPanel {
 
     private class ConfirmButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            System.out.println("test1");
+//            try {
+//                statement = primary.getConnectionStatement();
+            boolean flag = false;
             try {
-                statement = primary.getConnectionStatement();
                 int randomID = ThreadLocalRandom.current().nextInt(10000000, 100000000);
                 int randomEnergyUsage = ThreadLocalRandom.current().nextInt(600, 1200);
                 double totalCost = randomEnergyUsage * (Double.valueOf(tariffInputTextField.getText()) / 100);
@@ -249,14 +255,19 @@ public class NewCustomerPanel extends JPanel {
                         + ", " + 0
                         + ")";
                 System.out.println(query);
-                statement.executeUpdate(query);
+                System.out.println("test2");
+                flag = sqlConnection.UpdateCustomer(query);
                 alertPanel1.setText("Customer " + newUserId + " created", "Continue", 94);
-
+            }
+            catch (Exception ex) {
+                System.out.println("value error");
+            }
+            if(flag) {
                 NewCustomerPane = new JOptionPane();
                 NewCustomerPane.showOptionDialog(null, alertPanel1,
                         "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+            }
+            else {
                 invalidCustomerPane = new JOptionPane();
 
                 invalidCustomerPane.showOptionDialog(null, alertPanel2, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);

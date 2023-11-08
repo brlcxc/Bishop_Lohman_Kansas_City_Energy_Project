@@ -1,3 +1,5 @@
+package GUIDefaults;
+
 import java.awt.*;
 
 //this class is used to set the colors globally for the entire program

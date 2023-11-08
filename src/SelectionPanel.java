@@ -1,3 +1,7 @@
+import GUIDefaults.Colors;
+import GUIDefaults.DefaultButton;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,11 +17,11 @@ public class SelectionPanel extends JPanel {
     private JOptionPane customerIDPane;
     private CardLayout cl;
     private JPanel panel1;
-    public SelectionPanel(PrimaryPanel primary){
+    public SelectionPanel(PrimaryPanel primary, SQLConnection sqlConnection){
         this.primary = primary;
 
 
-        customerID = new CustomerIDPanel(primary, this);
+        customerID = new CustomerIDPanel(primary, this, sqlConnection);
         invalidCustomerID = new InvalidCustomerIDPanel(this);
         setBackground(Colors.backgroundColor);
         newCustomerButton = new DefaultButton("<html><b><center>Create New<br/Customer Profile</center></b></html>");

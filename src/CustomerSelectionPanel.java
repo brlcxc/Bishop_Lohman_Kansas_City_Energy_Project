@@ -1,3 +1,9 @@
+import GUIDefaults.BackButton;
+import GUIDefaults.Colors;
+import GUIDefaults.CustomerSelectionButton;
+import GUIDefaults.DeleteButton;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,7 +12,8 @@ import java.awt.event.ActionListener;
 //this panel contains all options the user can perform regarding the customer
 public class CustomerSelectionPanel extends JPanel {
     private PrimaryPanel primary;
-    private ConfirmCancelPanel deleteConfirmation;
+    private SQLConnection sqlConnection;
+    private DeleteCustomerPanel deleteConfirmation;
     private JOptionPane confirmationPane;
     private BackButton backButton;
     private CustomerSelectionButton customerInformationButton;
@@ -14,8 +21,9 @@ public class CustomerSelectionPanel extends JPanel {
     private CustomerSelectionButton energyUsageButton;
     private CustomerSelectionButton invoiceButton;
     private DeleteButton deleteButton;
-    CustomerSelectionPanel(PrimaryPanel primary){
+    CustomerSelectionPanel(PrimaryPanel primary, SQLConnection sqlConnection){
         this.primary = primary;
+        this.sqlConnection = sqlConnection;
         GridBagConstraints gbc = new GridBagConstraints();
 
         setBackground(Colors.backgroundColor);
@@ -58,7 +66,7 @@ public class CustomerSelectionPanel extends JPanel {
         gbc.gridx = 2;
         add(backButton, gbc);
 
-        deleteConfirmation = new ConfirmCancelPanel(primary);
+        deleteConfirmation = new DeleteCustomerPanel(primary, sqlConnection);
         deleteConfirmation.setText("<html><b><center>Are you sure you want to delete this<br/customer profile?</html></b></center>", "This action can not be undone");
         deleteConfirmation.setConfirmDeleteActionListener();
     }

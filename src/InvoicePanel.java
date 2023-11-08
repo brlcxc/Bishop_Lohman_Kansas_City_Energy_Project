@@ -1,14 +1,21 @@
+import GUIDefaults.BackButton;
+import GUIDefaults.Colors;
+import GUIDefaults.DefaultButton;
+import Logic.EmailWriter;
+import Logic.MailUtil;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
 
 //this panel is for viewing and sending the customer invoice
 public class InvoicePanel extends JPanel {
+    private SQLConnection sqlConnection;
     private BackButton backButton;
     private PrimaryPanel primary;
     private DefaultButton sendButton;
@@ -18,14 +25,15 @@ public class InvoicePanel extends JPanel {
     private JOptionPane sendPane;
     private JOptionPane sendPane2;
     private JTextArea emailInput;
-    JScrollPane scrollPane;
+    private JScrollPane scrollPane;
     private JPanel panel1;
     private JPanel panel2;
     private JPanel panel3;
     private JPanel panel4;
     
-    InvoicePanel(PrimaryPanel primary) {
+    InvoicePanel(PrimaryPanel primary, SQLConnection sqlConnection) {
         this.primary = primary;
+        this.sqlConnection = sqlConnection;
         GridBagConstraints gbc = new GridBagConstraints();
 
         setBackground(Colors.backgroundColor);
@@ -128,26 +136,14 @@ public class InvoicePanel extends JPanel {
     //the default invoice is set
     public void setInvoiceText() {
         java.util.Date date = new java.util.Date();
-        Statement statement = primary.getConnectionStatement();
-        String customerID = primary.getCustomerID();
 
-        System.out.println(customerID);
+        ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-        try {
-            String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
-            ResultSet result;
-            result = statement.executeQuery(customerStatement);
-            result.next();
-
-            emailInput.setText(date +
-                    "\n\nDear "+ result.getString(2) + " " + result.getString(3) + "," +
-                    "\n\nYour monthly bill is $" + result.getString(13) +
-                    "\n\nSincerely,\n\n" +
-                    "Kansas City Energy Cooperative");
-
-        } catch (Exception ex) {
-            System.out.println("ERROR: " + ex.getMessage());
-        }
+        emailInput.setText(date +
+            "\n\nDear "+ customerData.get(1) + " " + customerData.get(2) + "," +
+            "\n\nYour monthly bill is $" + customerData.get(12) +
+            "\n\nSincerely,\n\n" +
+            "Kansas City Energy Cooperative");
     }
 
     private class BackButtonListener implements ActionListener {

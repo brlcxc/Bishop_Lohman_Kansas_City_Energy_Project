@@ -1,10 +1,12 @@
+package GUIDefaults;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class BackButton extends JButton {
-    BackButton() {
+    public BackButton() {
         setBackground(Colors.backButtonColor);
         setPreferredSize(new Dimension(85,85));
         addMouseListener(new MouseListener());

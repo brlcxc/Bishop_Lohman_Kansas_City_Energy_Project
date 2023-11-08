@@ -1,18 +1,20 @@
+import GUIDefaults.*;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 //this panel is used for entering customer payments
 public class ProcessPaymentPanel extends JPanel {
     private BackButton backButton;
     private PrimaryPanel primary;
-    private Statement statement;
+    private SQLConnection sqlConnection;
     private DefaultButton makePaymentButton;
     private DefaultButton payFullButton;
     private BasicAlertPanel alertPanel1;
@@ -23,7 +25,6 @@ public class ProcessPaymentPanel extends JPanel {
     private JOptionPane pane2;
     private JOptionPane pane3;
     private JOptionPane pane4;
-    private String customerID;
     private Border blackLine;
     private StandardInputTextField paymentInputField;
     private StandardInputLabel paymentIndicator;
@@ -37,9 +38,10 @@ public class ProcessPaymentPanel extends JPanel {
     private JPanel panel7;
     DecimalFormat formatter = new DecimalFormat(".00");
 
-    ProcessPaymentPanel(PrimaryPanel primary) {
+    ProcessPaymentPanel(PrimaryPanel primary, SQLConnection sqlConnection) {
         blackLine = BorderFactory.createLineBorder(Colors.textColor);
         this.primary = primary;
+        this.sqlConnection = sqlConnection;
         GridBagConstraints gbc = new GridBagConstraints();
 
         setBackground(Colors.backgroundColor);
@@ -181,25 +183,14 @@ public class ProcessPaymentPanel extends JPanel {
     }
 
     public void setPaymentText() {
-        statement = primary.getConnectionStatement();
-        customerID = primary.getCustomerID();
+        ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-        try {
-            String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
-            ResultSet result;
-            result = statement.executeQuery(customerStatement);
-            result.next();
-
-            userTotalCost.setText("$" + result.getString(13));
-            userAmountDue.setText("$" + result.getString(14));
-            if (result.getString(15).equals("0")) {
-                paymentIndicator.setText("Unpaid");
-            } else {
-                paymentIndicator.setText("Paid");
-            }
-
-        } catch (Exception ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        userTotalCost.setText("$" + customerData.get(12));
+        userAmountDue.setText("$" + customerData.get(13));
+        if (customerData.get(14).equals("0")) {
+            paymentIndicator.setText("Unpaid");
+        } else {
+            paymentIndicator.setText("Paid");
         }
     }
 
@@ -215,26 +206,24 @@ public class ProcessPaymentPanel extends JPanel {
             pane4 = new JOptionPane();
 
             paymentInputField.setText("");
-            try {
-                String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
-                ResultSet result;
-                result = statement.executeQuery(customerStatement);
-                result.next();
+            ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-                if (result.getString(15).equals("1")) {
-                    pane2.showOptionDialog(null, alertPanel2, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
-                } else {
-                    String query = "UPDATE Customer SET " +
-                            "RemainingBalance = 0" +
-                            ", Paid = 1" +
-                            " WHERE CustomerID = " + customerID;
-                    System.out.println(query);
-                    statement.executeUpdate(query);
+            if (customerData.get(14).equals("1")) {
+                pane2.showOptionDialog(null, alertPanel2, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
+            } else {
+                String query = "UPDATE Customer SET " +
+                        "RemainingBalance = 0" +
+                        ", Paid = 1" +
+                        " WHERE CustomerID = " + sqlConnection.getCustomerID();
+                System.out.println(query);
+                boolean updateSuccess = sqlConnection.UpdateCustomer(query);
+                if(updateSuccess) {
                     pane4.showOptionDialog(null, alertPanel4, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
                 }
-            } catch (Exception ex) {
-                System.out.println("ERROR: " + ex.getMessage());
-                pane3.showOptionDialog(null, alertPanel3, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
+                else{
+                    pane3.showOptionDialog(null, alertPanel3, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
+
+                }
             }
         }
     }
@@ -245,15 +234,12 @@ public class ProcessPaymentPanel extends JPanel {
             pane2 = new JOptionPane();
             pane3 = new JOptionPane();
             try {
-                String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
-                ResultSet result;
-                result = statement.executeQuery(customerStatement);
-                result.next();
+                ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-                if (result.getString(15).equals("1")) {
+                if (customerData.get(14).equals("1")) {
                     pane2.showOptionDialog(null, alertPanel2, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
                 } else {
-                    double currentAmount = Double.parseDouble((result.getString(14)));
+                    double currentAmount = Double.parseDouble((customerData.get(13)));
                     double paymentInput = Double.parseDouble(paymentInputField.getText());
                     double newAmount;
                     String paymentStatus = "0";
@@ -270,9 +256,9 @@ public class ProcessPaymentPanel extends JPanel {
                     String query = "UPDATE Customer SET " +
                             "RemainingBalance = " + formatter.format(newAmount) +
                             ", Paid = " + paymentStatus +
-                            " WHERE CustomerID = " + customerID;
+                            " WHERE CustomerID = " + sqlConnection.getCustomerID();
                     System.out.println(query);
-                    statement.executeUpdate(query);
+                    sqlConnection.UpdateCustomer(query);
                     pane1.showOptionDialog(null, alertPanel1, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
                 }
 

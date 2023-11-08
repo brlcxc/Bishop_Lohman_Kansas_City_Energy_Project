@@ -1,3 +1,5 @@
+package Logic;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -5,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-//this code is taken primarily from the provided example for writing a pdf
 public class EmailWriter {
     private static final String FILE_NAME = "invoice.pdf";
 

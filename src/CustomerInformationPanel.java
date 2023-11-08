@@ -1,17 +1,19 @@
+import GUIDefaults.*;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
 
 public class CustomerInformationPanel extends JPanel{
     private BackButton backButton;
     private DefaultButton editButton;
     private PrimaryPanel primary;
-    private Statement statement;
+    private SQLConnection sqlConnection;
     private String customerID;
     private Border blackLine;
     private JPanel panel1;
@@ -26,8 +28,9 @@ public class CustomerInformationPanel extends JPanel{
     private StandardInputLabel tariffInputLabel;
     private StandardInputLabel meterInputLabel;
 
-    CustomerInformationPanel(PrimaryPanel primary){
+    CustomerInformationPanel(PrimaryPanel primary, SQLConnection sqlConnection){
         this.primary = primary;
+        this.sqlConnection = sqlConnection;
         GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -175,28 +178,16 @@ public class CustomerInformationPanel extends JPanel{
         panel3.add(meterInputLabel, gbc);
     }
     public void setCustomerInputs(){
-        statement = primary.getConnectionStatement();
-        customerID = primary.getCustomerID();
+        ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-        System.out.println(customerID);
+        customerIDInputLabel.setText(customerData.get(0));
+        customerNameInputLabel.setText(customerData.get(1) + " " + customerData.get(2));
+        emailInputLabel.setText(customerData.get(3));
+        phoneInputLabel.setText(customerData.get(4));
+        addressInputLabel.setText("<html>" + customerData.get(5) + "<br/> " + customerData.get(6) + ", " + customerData.get(7) + " " + customerData.get(8) + "</html>");
+        tariffInputLabel.setText(customerData.get(9) + "¢ / kWh");
+        meterInputLabel.setText(customerData.get(10));
 
-        try {
-            String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
-            ResultSet result;
-            result = statement.executeQuery(customerStatement);
-            result.next();
-
-            customerIDInputLabel.setText(result.getString(1));
-            customerNameInputLabel.setText(result.getString(2) + " " + result.getString(3));
-            emailInputLabel.setText(result.getString(4));
-            phoneInputLabel.setText(result.getString(5));
-            addressInputLabel.setText("<html>" + result.getString(6) + "<br/> " + result.getString(7) + ", " + result.getString(8) + " " + result.getString(9) + "</html>");
-            tariffInputLabel.setText(result.getString(10) + "¢ / kWh");
-            meterInputLabel.setText(result.getString(11));
-        }
-        catch (Exception ex) {
-            System.out.println("ERROR: " + ex.getMessage());
-        }
     }
     private class EditCustomerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {

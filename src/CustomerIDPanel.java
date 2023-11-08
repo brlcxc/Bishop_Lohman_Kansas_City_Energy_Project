@@ -1,14 +1,17 @@
+import GUIDefaults.Colors;
+import GUIDefaults.DefaultButton;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 //this panel is for the user entering the customer ID
 public class CustomerIDPanel extends JPanel {
     private PrimaryPanel primary;
+    private SQLConnection sqlConnection;
     private SelectionPanel selection;
     private JOptionPane customerIDPane;
     private DefaultButton continueButton;
@@ -16,10 +19,11 @@ public class CustomerIDPanel extends JPanel {
     private JTextField customerIDInput;
     private JPanel panel1;
     private JLabel label;
-    CustomerIDPanel(PrimaryPanel primary, SelectionPanel selection){
+    CustomerIDPanel(PrimaryPanel primary, SelectionPanel selection, SQLConnection sqlConnection){
         Border blackLine = BorderFactory.createLineBorder(Colors.textColor);
         this.selection = selection;
         this.primary = primary;
+        this.sqlConnection = sqlConnection;
 
         GridBagConstraints gbc = new GridBagConstraints();
         customerIDInput = new JTextField(12);
@@ -92,20 +96,29 @@ public class CustomerIDPanel extends JPanel {
     private class ContinueListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String userInput = customerIDInput.getText();
-            String customerStatement = "SELECT CustomerFirstName FROM Customer WHERE CustomerID = " + userInput;
-            Statement statement = primary.getConnectionStatement();
+//            String customerStatement = "SELECT CustomerFirstName FROM Customer WHERE CustomerID = " + userInput;
+//            Statement statement = primary.getConnectionStatement();
 
-            try {
-                ResultSet result = statement.executeQuery(customerStatement);
-                if (!result.isBeforeFirst() ) {
-                    System.out.println("No data");
-                    throw new RuntimeException();
-                }
-                primary.CustomerSelectionPanel(userInput);
-                customerIDPane.getRootFrame().dispose();
-            }
-            catch (Exception ex) {
+//            try {
+////                ResultSet result = sqlConnection.getCustomerInformation(userInput);
+//                if (!sqlConnection.validateCustomerID(userInput)) {
+//                    System.out.println("No data");
+//                    throw new RuntimeException();
+//                }
+//                primary.CustomerSelectionPanel(userInput);
+//                customerIDPane.getRootFrame().dispose();
+//            }
+//            catch (Exception ex) {
+//                selection.Next();
+//            }
+            if (!sqlConnection.ValidateCustomerID(userInput)) {
+                System.out.println("No data");
                 selection.Next();
+            }
+            else{
+                sqlConnection.setCustomerID(userInput);
+                primary.CustomerSelectionPanel();
+                customerIDPane.getRootFrame().dispose();
             }
             customerIDInput.setText("");
         }

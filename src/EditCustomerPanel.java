@@ -1,14 +1,17 @@
+import GUIDefaults.*;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class EditCustomerPanel extends JPanel{
+    private SQLConnection sqlConnection;
     private DefaultButton confirmButton;
     private CautionButton cancelButton;
     private PrimaryPanel primary;
@@ -16,7 +19,6 @@ public class EditCustomerPanel extends JPanel{
     private BasicAlertPanel alertPanel2;
     private JOptionPane updateFailedPane;
     private JOptionPane updateSuccessPane;
-    private Statement statement;
     private String customerID;
     private Border blackLine;
     private JPanel panel1;
@@ -38,7 +40,8 @@ public class EditCustomerPanel extends JPanel{
     DecimalFormat formatter = new DecimalFormat(".00");
     private String[] meterList = {"Dial", "Digital"};
 
-    EditCustomerPanel(PrimaryPanel primary){
+    EditCustomerPanel(PrimaryPanel primary, SQLConnection sqlConnection){
+        this.sqlConnection = sqlConnection;
         this.primary = primary;
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -223,42 +226,35 @@ public class EditCustomerPanel extends JPanel{
     }
     private class ConfirmButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            statement = primary.getConnectionStatement();
-            String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
+            ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-            try{
-                ResultSet result;
-                result = statement.executeQuery(customerStatement);
-                result.next();
+            double newEnergyCost = (Double.parseDouble(tariffInputTextField.getText()) / 100) * Double.parseDouble(customerData.get(12));
+            //Note: there is a new cost calculated and payments reset
 
-                double newEnergyCost = (Double.parseDouble(tariffInputTextField.getText()) / 100) * Double.parseDouble(result.getString(12));
-                //Note: there is a new cost calculated and payments reset
-
-                String query = "UPDATE Customer SET " +
-                        "CustomerFirstName = '" + customerFirstnameInputTextField.getText() +
-                        "', CustomerLastName = '" + customerLastnameInputTextField.getText() +
-                        "', Email = '" + emailInputTextField.getText() +
-                        "', PhoneNumber = '" + phoneInputTextField.getText() +
-                        "', Address = '" + addressInputTextField.getText() +
-                        "', City = '" + cityInputTextField.getText() +
-                        "', State = '" + stateInputTextField.getText() +
-                        "', Zip = '" + zipcodeInputTextField.getText() +
-                        "', EnergyTariff = " + tariffInputTextField.getText() +
-                        ", MeterType = '" + meterBox.getSelectedItem() +
-                        "', TotalDue = " + formatter.format(newEnergyCost) +
-                        ", RemainingBalance = " + formatter.format(newEnergyCost) +
-                        ", Paid = 0" +
-                        " WHERE CustomerID = " + customerID;
-                System.out.println(query);
-                statement.executeUpdate(query);
-
+            String query = "UPDATE Customer SET " +
+                    "CustomerFirstName = '" + customerFirstnameInputTextField.getText() +
+                    "', CustomerLastName = '" + customerLastnameInputTextField.getText() +
+                    "', Email = '" + emailInputTextField.getText() +
+                    "', PhoneNumber = '" + phoneInputTextField.getText() +
+                    "', Address = '" + addressInputTextField.getText() +
+                    "', City = '" + cityInputTextField.getText() +
+                    "', State = '" + stateInputTextField.getText() +
+                    "', Zip = '" + zipcodeInputTextField.getText() +
+                    "', EnergyTariff = " + tariffInputTextField.getText() +
+                    ", MeterType = '" + meterBox.getSelectedItem() +
+                    "', TotalDue = " + formatter.format(newEnergyCost) +
+                    ", RemainingBalance = " + formatter.format(newEnergyCost) +
+                    ", Paid = 0" +
+                    " WHERE CustomerID = " + customerID;
+            System.out.println(query);
+            boolean updateSuccess = sqlConnection.UpdateCustomer(query);
+            if(updateSuccess) {
                 updateSuccessPane = new JOptionPane();
                 updateFailedPane.showOptionDialog(null, alertPanel2, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
             }
-            catch (Exception ex){
+            else{
                 updateFailedPane = new JOptionPane();
                 updateFailedPane.showOptionDialog(null, alertPanel, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
-                System.out.println(ex.getMessage());
             }
             primary.CustomerInformation();
         }
@@ -266,35 +262,23 @@ public class EditCustomerPanel extends JPanel{
 
     //the existing customer information is set as the existing text
     public void setText(){
-        statement = primary.getConnectionStatement();
-        customerID = primary.getCustomerID();
+        ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-        try {
-            String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
-            ResultSet result;
-            result = statement.executeQuery(customerStatement);
-            result.next();
+        customerFirstnameInputTextField.setText(customerData.get(1));
+        customerLastnameInputTextField.setText(customerData.get(2));
+        emailInputTextField.setText(customerData.get(3));
+        phoneInputTextField.setText(customerData.get(4));
+        addressInputTextField.setText(customerData.get(5));
+        cityInputTextField.setText(customerData.get(6));
+        stateInputTextField.setText(customerData.get(7));
+        zipcodeInputTextField.setText(customerData.get(8));
+        tariffInputTextField.setText(customerData.get(9));
 
-            customerFirstnameInputTextField.setText(result.getString(2));
-            customerLastnameInputTextField.setText(result.getString(3));
-            emailInputTextField.setText(result.getString(4));
-            phoneInputTextField.setText(result.getString(5));
-            addressInputTextField.setText(result.getString(6));
-            cityInputTextField.setText(result.getString(7));
-            stateInputTextField.setText(result.getString(8));
-            zipcodeInputTextField.setText(result.getString(9));
-            tariffInputTextField.setText(result.getString(10));
-
-            if(result.getString(10).equals("Dial")){
-                meterBox.setSelectedIndex(0);
-            }
-            else {
-                meterBox.setSelectedIndex(1);
-            }
+        if(customerData.get(10).equals("Dial")){
+            meterBox.setSelectedIndex(0);
         }
-        catch (Exception ex) {
-
-            System.out.println("ERROR: " + ex.getMessage());
+        else {
+            meterBox.setSelectedIndex(1);
         }
     }
 }

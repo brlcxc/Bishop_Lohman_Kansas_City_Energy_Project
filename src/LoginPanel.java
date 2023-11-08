@@ -1,3 +1,7 @@
+import GUIDefaults.Colors;
+import GUIDefaults.DefaultButton;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 //this panel acts as the login panel which is the first panel the user sees
 public class LoginPanel extends JPanel{
     private PrimaryPanel primary;
+    private SQLConnection sqlConnection;
     private MenuBar menuBar;
     private DefaultButton loginButton;
     private JPanel panel1;
@@ -20,7 +25,8 @@ public class LoginPanel extends JPanel{
     private Border redLine;
     private GridBagConstraints panel2gbc;
     private boolean loginFlag;
-    public LoginPanel(PrimaryPanel primary){
+    public LoginPanel(PrimaryPanel primary, SQLConnection sqlConnection){
+        this.sqlConnection = sqlConnection;
         this.primary = primary;
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -140,7 +146,7 @@ public class LoginPanel extends JPanel{
             usernameInput = usernameField.getText();
             passwordInput = passwordField.getText();
 
-            loginFlag = primary.EstablishConnection(usernameInput, passwordInput);
+            loginFlag = sqlConnection.EstablishConnection(usernameInput, passwordInput);
 
             if(loginFlag){
                 menuBar.setUserText(usernameInput);

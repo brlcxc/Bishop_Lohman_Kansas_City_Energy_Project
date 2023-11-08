@@ -1,15 +1,21 @@
+import GUIDefaults.BackButton;
+import GUIDefaults.Colors;
+import GUIDefaults.StandardInputLabel;
+import GUIDefaults.StandardLabel;
+import Logic.SQLConnection;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
 
 //this panel just displays certain information regarding customer energy usage
 public class EnergyUsagePanel extends JPanel {
     private PrimaryPanel primary;
+    private SQLConnection sqlConnection;
     private BackButton backButton;
     private Border blackLine;
     private StandardInputLabel energyUsageInput;
@@ -21,9 +27,10 @@ public class EnergyUsagePanel extends JPanel {
     private JPanel panel3;
     private JPanel panel4;
 
-    EnergyUsagePanel(PrimaryPanel primary) {
+    EnergyUsagePanel(PrimaryPanel primary, SQLConnection sqlConnection) {
         blackLine = BorderFactory.createLineBorder(Colors.textColor);
         this.primary = primary;
+        this.sqlConnection = sqlConnection;
         GridBagConstraints gbc = new GridBagConstraints();
 
         setBackground(Colors.backgroundColor);
@@ -134,22 +141,12 @@ public class EnergyUsagePanel extends JPanel {
     }
 
     public void setEnergyText() {
-        Statement statement = primary.getConnectionStatement();
-        String customerID = primary.getCustomerID();
+        ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-        try {
-            String customerStatement = "SELECT * FROM Customer WHERE CustomerID = " + customerID;
-            ResultSet result;
-            result = statement.executeQuery(customerStatement);
-            result.next();
-
-            energyUsageInput.setText(result.getString(12) + "kWh");
-            tariffInput.setText(result.getString(10) + "¢ / kWh");
-            meterTypeInput.setText(result.getString(11));
-            userAmountDueInput.setText("$" + result.getString(13));
-        } catch (Exception ex) {
-            System.out.println("ERROR: " + ex.getMessage());
-        }
+        energyUsageInput.setText(customerData.get(11) + "kWh");
+        tariffInput.setText(customerData.get(9) + "¢ / kWh");
+        meterTypeInput.setText(customerData.get(10));
+        userAmountDueInput.setText("$" + customerData.get(12));
     }
 
     private class BackButtonListener implements ActionListener {
