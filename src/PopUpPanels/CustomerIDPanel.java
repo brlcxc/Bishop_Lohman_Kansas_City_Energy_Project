@@ -1,6 +1,10 @@
+package PopUpPanels;
+
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
 import Logic.SQLConnection;
+import MainGUI.PrimaryPanel;
+import MainGUI.SelectionPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -19,7 +23,7 @@ public class CustomerIDPanel extends JPanel {
     private JTextField customerIDInput;
     private JPanel panel1;
     private JLabel label;
-    CustomerIDPanel(PrimaryPanel primary, SelectionPanel selection, SQLConnection sqlConnection){
+    public CustomerIDPanel(PrimaryPanel primary, SelectionPanel selection, SQLConnection sqlConnection){
         Border blackLine = BorderFactory.createLineBorder(Colors.textColor);
         this.selection = selection;
         this.primary = primary;
@@ -84,7 +88,7 @@ public class CustomerIDPanel extends JPanel {
         label.setForeground(Colors.textColor);
         label.setIcon(labelImage);
     }
-    void setJOptionPane(JOptionPane customerIDPane){
+    public void setJOptionPane(JOptionPane customerIDPane){
         this.customerIDPane = customerIDPane;
     }
     private class CancelButtonListener implements ActionListener {
@@ -96,21 +100,6 @@ public class CustomerIDPanel extends JPanel {
     private class ContinueListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String userInput = customerIDInput.getText();
-//            String customerStatement = "SELECT CustomerFirstName FROM Customer WHERE CustomerID = " + userInput;
-//            Statement statement = primary.getConnectionStatement();
-
-//            try {
-////                ResultSet result = sqlConnection.getCustomerInformation(userInput);
-//                if (!sqlConnection.validateCustomerID(userInput)) {
-//                    System.out.println("No data");
-//                    throw new RuntimeException();
-//                }
-//                primary.CustomerSelectionPanel(userInput);
-//                customerIDPane.getRootFrame().dispose();
-//            }
-//            catch (Exception ex) {
-//                selection.Next();
-//            }
             if (!sqlConnection.ValidateCustomerID(userInput)) {
                 System.out.println("No data");
                 selection.Next();

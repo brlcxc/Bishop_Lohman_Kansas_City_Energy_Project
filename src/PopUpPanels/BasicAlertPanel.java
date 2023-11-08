@@ -1,5 +1,8 @@
+package PopUpPanels;
+
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
+import MainGUI.PrimaryPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +15,7 @@ public class BasicAlertPanel extends JPanel {
     private PrimaryPanel primary;
     private DefaultButton button;
     private JLabel label;
-    BasicAlertPanel(PrimaryPanel primary){
+    public BasicAlertPanel(PrimaryPanel primary){
         this.primary = primary;
         GridBagConstraints gbc = new GridBagConstraints();
 

@@ -1,5 +1,8 @@
+package PopUpPanels;
+
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
+import MainGUI.SelectionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +15,7 @@ public class InvalidCustomerIDPanel extends JPanel {
     private DefaultButton continueButton;
     private SelectionPanel selection;
     private JLabel label;
-    InvalidCustomerIDPanel(SelectionPanel selection){
+    public InvalidCustomerIDPanel(SelectionPanel selection){
         this.selection = selection;
         GridBagConstraints gbc = new GridBagConstraints();
 

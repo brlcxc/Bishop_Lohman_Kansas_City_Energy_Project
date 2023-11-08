@@ -1,8 +1,11 @@
+package MainGUI;
+
 import GUIDefaults.BackButton;
 import GUIDefaults.Colors;
 import GUIDefaults.CustomerSelectionButton;
 import GUIDefaults.DeleteButton;
 import Logic.SQLConnection;
+import PopUpPanels.DeleteCustomerPanel;
 
 import javax.swing.*;
 import java.awt.*;

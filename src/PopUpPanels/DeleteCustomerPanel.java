@@ -1,25 +1,29 @@
+package PopUpPanels;
+
 import GUIDefaults.CautionButton;
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
 import Logic.SQLConnection;
+import MainGUI.PrimaryPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Statement;
 
 //this panel is made for warning messages to overlay onto JOptionPane with a confirm and cancel option
 //unlike basic alert panel there are two labels and two buttons
-public class ConfirmCancelPanel extends JPanel {
+public class DeleteCustomerPanel extends JPanel {
+    private SQLConnection sqlConnection;
     private JOptionPane confirmationPane;
     private CautionButton confirmButton;
     private DefaultButton cancelButton;
     private PrimaryPanel primary;
     private JLabel label1;
     private JLabel label2;
-    ConfirmCancelPanel(PrimaryPanel primary){
+    public DeleteCustomerPanel(PrimaryPanel primary, SQLConnection sqlConnection){
         this.primary = primary;
+        this.sqlConnection = sqlConnection;
         GridBagConstraints gbc = new GridBagConstraints();
 
         setPreferredSize(new Dimension(242, 100));
@@ -75,37 +79,14 @@ public class ConfirmCancelPanel extends JPanel {
     }
 
     //this action listener is used for deleting the customer
-
-    //used on sign-out panel
-    private class ConfirmButtonListener2 implements ActionListener {
+    private class ConfirmButtonListener1 implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            confirmationPane.getRootFrame().dispose();
-            primary.LoginPanel();
-        }
-    }
-
-    //used for confirming exit when editing customer
-    private class ConfirmButtonListener3 implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            confirmationPane.getRootFrame().dispose();
-            primary.CustomerInformation();
-        }
-    }
-
-    //this is for confirming the cancellation of a new customer creation
-    private class ConfirmButtonListener4 implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+            sqlConnection.DeleteCustomer();
             confirmationPane.getRootFrame().dispose();
             primary.SelectionPanel();
         }
     }
-    public void setConfirmSignOutActionListener(){
-        confirmButton.addActionListener(new ConfirmButtonListener2());
-    }
-    public void setConfirmEditActionListener(){
-        confirmButton.addActionListener(new ConfirmButtonListener3());
-    }
-    public void setConfirmCreationActionListener(){
-        confirmButton.addActionListener(new ConfirmButtonListener4());
+    public void setConfirmDeleteActionListener(){
+        confirmButton.addActionListener(new ConfirmButtonListener1());
     }
 }

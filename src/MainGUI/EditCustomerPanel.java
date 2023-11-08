@@ -1,5 +1,9 @@
+package MainGUI;
+
 import GUIDefaults.*;
 import Logic.SQLConnection;
+import PopUpPanels.BasicAlertPanel;
+import PopUpPanels.ConfirmCancelPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -8,25 +12,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
 
-//this panel contains all the input fields for a new customer
-public class NewCustomerPanel extends JPanel {
-    private JOptionPane NewCustomerPane;
-    private JOptionPane invalidCustomerPane;
+public class EditCustomerPanel extends JPanel{
+    private SQLConnection sqlConnection;
     private DefaultButton confirmButton;
     private CautionButton cancelButton;
     private PrimaryPanel primary;
-    private SQLConnection sqlConnection;
-    private BasicAlertPanel alertPanel1;
+    private BasicAlertPanel alertPanel;
     private BasicAlertPanel alertPanel2;
+    private JOptionPane updateFailedPane;
+    private JOptionPane updateSuccessPane;
     private Border blackLine;
     private JPanel panel1;
     private JPanel panel2;
     private JPanel panel3;
     private JPanel panel4;
-    private ConfirmCancelPanel deleteConfirmation;
-    private JOptionPane confirmationPane;
     private StandardInputTextField customerFirstnameInputTextField;
     private StandardInputTextField customerLastnameInputTextField;
     private StandardInputTextField emailInputTextField;
@@ -37,10 +38,12 @@ public class NewCustomerPanel extends JPanel {
     private StandardInputTextField zipcodeInputTextField;
     private StandardInputTextField tariffInputTextField;
     private JComboBox meterBox;
-    private String[] meterList = {"Dial", "Digital"};
+    private ConfirmCancelPanel cancelConfirmation;
+    private JOptionPane confirmationPane;
     DecimalFormat formatter = new DecimalFormat(".00");
+    private String[] meterList = {"Dial", "Digital"};
 
-    NewCustomerPanel(PrimaryPanel primary, SQLConnection sqlConnection) {
+    EditCustomerPanel(PrimaryPanel primary, SQLConnection sqlConnection){
         this.sqlConnection = sqlConnection;
         this.primary = primary;
         GridBagConstraints gbc = new GridBagConstraints();
@@ -66,26 +69,39 @@ public class NewCustomerPanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         add(panel2, gbc);
+
         gbc.gridy = -1;
         add(panel3, gbc);
-        gbc.gridy = -2;
-        gbc.insets = new Insets(15, 0, 0, 0); //external padding
-        add(panel1, gbc);
-    }
 
+        gbc.gridy = -2;
+        gbc.insets = new Insets(15,0,0,0); //external padding
+        add(panel1, gbc);
+
+        //a different panel is used depending on the success of the update
+        alertPanel = new BasicAlertPanel(primary);
+        alertPanel.setText("Update failed", "Continue", 94);
+        alertPanel.setContinueActionListener1();
+
+        alertPanel2 = new BasicAlertPanel(primary);
+        alertPanel2.setText("Update success!", "Continue", 94);
+        alertPanel2.setContinueActionListener1();
+
+        cancelConfirmation = new ConfirmCancelPanel(primary);
+        cancelConfirmation.setText("<html><b><center>Are you sure you like to<br/cancel?</html></b></center>", "Any unsaved progress will be lost");
+        cancelConfirmation.setConfirmEditActionListener();
+    }
     private void buildPanel2() {
-        JLabel titleLabel = new JLabel("Customer Information");
+        JLabel titleLabel = new JLabel("Edit Customer Information");
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
         titleLabel.setForeground(Colors.textColor); //text color
 
         panel2 = new JPanel();
 
         panel2.setBackground(Colors.backgroundColor);
-        panel2.setBorder(new EmptyBorder(45, 0, 10, 0));
+        panel2.setBorder(new EmptyBorder(45,0,10,0));
 
         panel2.add(titleLabel);
     }
-
     private void buildPanel3() {
         blackLine = BorderFactory.createLineBorder(Colors.textColor);
 
@@ -127,12 +143,12 @@ public class NewCustomerPanel extends JPanel {
         panel4.add(tariffUnitLabel);
 
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(18, 18, 10, 10); //external padding
+        gbc.insets = new Insets(18,18,10,10); //external padding
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel3.add(firstnameLabel, gbc);
 
-        gbc.insets = new Insets(10, 18, 10, 10);
+        gbc.insets = new Insets(10,18,10,10);
         gbc.gridy = -1;
         panel3.add(lastnameLabel, gbc);
 
@@ -142,16 +158,16 @@ public class NewCustomerPanel extends JPanel {
         gbc.gridy = -3;
         panel3.add(phoneLabel, gbc);
 
-        gbc.insets = new Insets(10, 18, 18, 10);
+        gbc.insets = new Insets(10,18,18,10);
         gbc.gridy = -4;
         panel3.add(meterLabel, gbc);
 
-        gbc.insets = new Insets(18, 10, 10, 10);
+        gbc.insets = new Insets(18,10,10,10);
         gbc.gridx = 1;
         gbc.gridy = 0;
         panel3.add(customerFirstnameInputTextField, gbc);
 
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(10,10,10,10);
         gbc.gridy = -1;
         panel3.add(customerLastnameInputTextField, gbc);
 
@@ -164,32 +180,32 @@ public class NewCustomerPanel extends JPanel {
         gbc.gridy = -4;
         panel3.add(meterBox, gbc);
 
-        gbc.insets = new Insets(18, 10, 10, 10);
+        gbc.insets = new Insets(18,10,10,10);
         gbc.gridx = 2;
         gbc.gridy = 0;
         panel3.add(addressLabel, gbc);
 
-        gbc.insets = new Insets(18, 10, 10, 10);
+        gbc.insets = new Insets(18,10,10,10);
         gbc.gridy = -1;
         panel3.add(cityLabel, gbc);
 
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(10,10,10,10);
         gbc.gridy = -2;
         panel3.add(stateLabel, gbc);
 
         gbc.gridy = -3;
         panel3.add(zipCodeLabel, gbc);
 
-        gbc.insets = new Insets(10, 10, 18, 10);
+        gbc.insets = new Insets(10,10,18,10);
         gbc.gridy = -4;
         panel3.add(tariffLabel, gbc);
 
-        gbc.insets = new Insets(18, 10, 10, 18);
+        gbc.insets = new Insets(18,10,10,18);
         gbc.gridx = 3;
         gbc.gridy = 0;
         panel3.add(addressInputTextField, gbc);
 
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(10,10,10,10);
         gbc.gridy = -1;
         panel3.add(cityInputTextField, gbc);
 
@@ -200,92 +216,79 @@ public class NewCustomerPanel extends JPanel {
         panel3.add(zipcodeInputTextField, gbc);
 
 
-        gbc.insets = new Insets(10, 8, 18, 18);
+        gbc.insets = new Insets(10,8,18,18);
         gbc.gridy = -4;
         panel3.add(panel4, gbc);
-
-        alertPanel1 = new BasicAlertPanel(primary);
-        alertPanel1.setContinueActionListener2();
-        alertPanel2 = new BasicAlertPanel(primary);
-        alertPanel2.setText("Error: Creation failed", "OK", 84);
-        alertPanel2.setContinueActionListener2();
-
-        deleteConfirmation = new ConfirmCancelPanel(primary);
-        deleteConfirmation.setText("<html><b><center>Are you sure you like to<br/cancel?</html></b></center>", "Any unsaved progress will be lost");
-        deleteConfirmation.setConfirmCreationActionListener();
     }
-
     private class CancelButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             confirmationPane = new JOptionPane();
-            confirmationPane.showOptionDialog(null, deleteConfirmation,
+            confirmationPane.showOptionDialog(null, cancelConfirmation,
                     "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
         }
     }
-
     private class ConfirmButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("test1");
-//            try {
-//                statement = primary.getConnectionStatement();
-            boolean flag = false;
-            try {
-                int randomID = ThreadLocalRandom.current().nextInt(10000000, 100000000);
-                int randomEnergyUsage = ThreadLocalRandom.current().nextInt(600, 1200);
-                double totalCost = randomEnergyUsage * (Double.valueOf(tariffInputTextField.getText()) / 100);
-                String newUserId = randomID + "";
-                String energyUsage = randomEnergyUsage + "";
+            ArrayList<String> customerData = sqlConnection.getCustomerInformation();
 
-                String query = "INSERT INTO Customer " +
-                        "(CustomerID, CustomerFirstName, CustomerLastName, Email, PhoneNumber, Address, City, State, Zip, EnergyTariff, MeterType, EnergyUsed, TotalDue, RemainingBalance, Paid) "
-                        + "VALUES ('" + newUserId
-                        + "', '" + customerFirstnameInputTextField.getText()
-                        + "', '" + customerLastnameInputTextField.getText()
-                        + "', '" + emailInputTextField.getText()
-                        + "', '" + phoneInputTextField.getText()
-                        + "', '" + addressInputTextField.getText()
-                        + "', '" + cityInputTextField.getText()
-                        + "', '" + stateInputTextField.getText()
-                        + "', '" + zipcodeInputTextField.getText()
-                        + "', " + tariffInputTextField.getText()
-                        + ", '" + meterBox.getSelectedItem()
-                        + "', " + energyUsage
-                        + ", " + formatter.format(totalCost)
-                        + ", " + formatter.format(totalCost)
-                        + ", " + 0
-                        + ")";
+            try {
+                double newEnergyCost = (Double.parseDouble(tariffInputTextField.getText()) / 100) * Double.parseDouble(customerData.get(11));
+                System.out.println(customerData.get(12));
+                //Note: there is a new cost calculated and payments reset
+
+                String query = "UPDATE Customer SET " +
+                        "CustomerFirstName = '" + customerFirstnameInputTextField.getText() +
+                        "', CustomerLastName = '" + customerLastnameInputTextField.getText() +
+                        "', Email = '" + emailInputTextField.getText() +
+                        "', PhoneNumber = '" + phoneInputTextField.getText() +
+                        "', Address = '" + addressInputTextField.getText() +
+                        "', City = '" + cityInputTextField.getText() +
+                        "', State = '" + stateInputTextField.getText() +
+                        "', Zip = '" + zipcodeInputTextField.getText() +
+                        "', EnergyTariff = " + tariffInputTextField.getText() +
+                        ", MeterType = '" + meterBox.getSelectedItem() +
+                        "', TotalDue = " + formatter.format(newEnergyCost) +
+                        ", RemainingBalance = " + formatter.format(newEnergyCost) +
+                        ", Paid = 0" +
+                        " WHERE CustomerID = " + sqlConnection.getCustomerID();
                 System.out.println(query);
-                System.out.println("test2");
-                flag = sqlConnection.UpdateCustomer(query);
-                alertPanel1.setText("Customer " + newUserId + " created", "Continue", 94);
+                boolean updateSuccess = sqlConnection.UpdateCustomer(query);
+                if (!updateSuccess) {
+                    throw new RuntimeException("update failed");
+                }
+                updateSuccessPane = new JOptionPane();
+                updateFailedPane.showOptionDialog(null, alertPanel2, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
             }
             catch (Exception ex) {
-                System.out.println("value error");
+                System.out.println("ERROR: " + ex.getMessage());
+                updateFailedPane = new JOptionPane();
+                updateFailedPane.showOptionDialog(null, alertPanel, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
             }
-            if(flag) {
-                NewCustomerPane = new JOptionPane();
-                NewCustomerPane.showOptionDialog(null, alertPanel1,
-                        "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
-            }
-            else {
-                invalidCustomerPane = new JOptionPane();
-
-                invalidCustomerPane.showOptionDialog(null, alertPanel2, "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
-            }
+            primary.CustomerInformation();
         }
     }
 
-    //this is for when the user leaves the screen
-    public void setText() {
-        customerFirstnameInputTextField.setText("");
-        customerLastnameInputTextField.setText("");
-        emailInputTextField.setText("");
-        phoneInputTextField.setText("");
-        meterBox.setSelectedIndex(0);
-        addressInputTextField.setText("");
-        cityInputTextField.setText("");
-        stateInputTextField.setText("");
-        zipcodeInputTextField.setText("");
-        tariffInputTextField.setText("");
+    //the existing customer information is set as the existing text
+    public void setText(){
+        ArrayList<String> customerData = sqlConnection.getCustomerInformation();
+
+        customerFirstnameInputTextField.setText(customerData.get(1));
+        customerLastnameInputTextField.setText(customerData.get(2));
+        emailInputTextField.setText(customerData.get(3));
+        phoneInputTextField.setText(customerData.get(4));
+        addressInputTextField.setText(customerData.get(5));
+        cityInputTextField.setText(customerData.get(6));
+        stateInputTextField.setText(customerData.get(7));
+        zipcodeInputTextField.setText(customerData.get(8));
+        tariffInputTextField.setText(customerData.get(9));
+
+        if(customerData.get(10).equals("Dial")){
+            meterBox.setSelectedIndex(0);
+        }
+        else {
+            meterBox.setSelectedIndex(1);
+        }
     }
 }
+
+

@@ -1,5 +1,8 @@
+package MainGUI;
+
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
+import PopUpPanels.ConfirmCancelPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -7,15 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MenuBar extends JMenuBar {
-    private PrimaryPanel primary;
-    private DefaultButton signOutButton;
     private JLabel usernameLabel;
     private JLabel customerIDLabel;
     private ConfirmCancelPanel deleteConfirmation;
     private JOptionPane confirmationPane;
     public MenuBar(PrimaryPanel primary) {
-        this.primary = primary;
-        signOutButton = new DefaultButton("Sign Out");
+        DefaultButton signOutButton = new DefaultButton("Sign Out");
 
         setBackground(Colors.menuBarColor);
 

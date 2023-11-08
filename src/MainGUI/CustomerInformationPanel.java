@@ -1,3 +1,5 @@
+package MainGUI;
+
 import GUIDefaults.*;
 import Logic.SQLConnection;
 
@@ -14,7 +16,6 @@ public class CustomerInformationPanel extends JPanel{
     private DefaultButton editButton;
     private PrimaryPanel primary;
     private SQLConnection sqlConnection;
-    private String customerID;
     private Border blackLine;
     private JPanel panel1;
     private JPanel panel2;

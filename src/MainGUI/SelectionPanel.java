@@ -1,6 +1,10 @@
+package MainGUI;
+
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
 import Logic.SQLConnection;
+import PopUpPanels.CustomerIDPanel;
+import PopUpPanels.InvalidCustomerIDPanel;
 
 import javax.swing.*;
 import java.awt.*;

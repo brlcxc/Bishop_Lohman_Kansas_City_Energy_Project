@@ -1,5 +1,9 @@
+package MainGUI;
+
 import GUIDefaults.*;
 import Logic.SQLConnection;
+import MainGUI.PrimaryPanel;
+import PopUpPanels.BasicAlertPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -244,11 +248,14 @@ public class ProcessPaymentPanel extends JPanel {
                     double newAmount;
                     String paymentStatus = "0";
 
-                    if (currentAmount >= paymentInput) {
-                        newAmount = currentAmount - paymentInput;
+                    if (currentAmount < paymentInput) {
+                        throw new Exception("Too high");
+                    }
+                    else if(paymentInput < 0){
+                        throw new Exception("Too low");
                     }
                     else {
-                        throw new Exception("Too high");
+                        newAmount = currentAmount - paymentInput;
                     }
                     if (newAmount == 0) {
                         paymentStatus = "1";

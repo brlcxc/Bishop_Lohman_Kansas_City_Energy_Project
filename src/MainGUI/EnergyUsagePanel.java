@@ -1,3 +1,5 @@
+package MainGUI;
+
 import GUIDefaults.BackButton;
 import GUIDefaults.Colors;
 import GUIDefaults.StandardInputLabel;

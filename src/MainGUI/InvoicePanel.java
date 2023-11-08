@@ -1,9 +1,12 @@
+package MainGUI;
+
 import GUIDefaults.BackButton;
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
 import Logic.EmailWriter;
 import Logic.MailUtil;
 import Logic.SQLConnection;
+import PopUpPanels.BasicAlertPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
