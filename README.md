@@ -2,6 +2,8 @@
 
 The purpose of the application is to act as an interface for employees at a hypothetical energy company to access and modify customer data. Through the application, employees can create new customer profiles, access and modify existing customer demographic data, process customer payments, view energy usage, and send a customer invoice through email. The thought process behind the application is for the employee to be using it while on a call with a customer or when viewing customer documents.
 
+[Video Demonstration](https://www.youtube.com/watch?v=kr5WqMA7zng)
+
 ## Usage
 ### Login Page
 
