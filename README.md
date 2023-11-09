@@ -9,7 +9,7 @@ On the login page there are fields to enter a username and password with a butto
 
 `Note`: For the purposes of this application, the username and password will be the same as the credentials needed to access the connected database
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fe390360-af7d-4b29-b7ac-ee8b40d0b3e2" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fe390360-af7d-4b29-b7ac-ee8b40d0b3e2" width="450">
 
 ### Employee Option Page
 
@@ -17,7 +17,7 @@ The next page has an option to access an existing customer as well as the option
 
 `Note`: The employee username along with an option to sign out are now displayed in the top right corner. These will remain in place until the employee signs out. Pressing “sign out” will bring the employee back to the login page 
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/6aee9dce-5970-489b-9473-76b86903e98f" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/6aee9dce-5970-489b-9473-76b86903e98f" width="450">
 
 ### Creating a New Customer Profile
 
@@ -25,8 +25,8 @@ If the employee selects the option to create a new user profile, they will be di
 
 `Note`: For the purposes of this application a random energy usage is selected.
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/03a8db61-c57c-47ad-92d8-755fce6b6a98" width="600">
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fd4b083b-d796-40aa-92e5-be1655d21006" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/03a8db61-c57c-47ad-92d8-755fce6b6a98" width="450">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fd4b083b-d796-40aa-92e5-be1655d21006" width="450">
 
 ### Accessing an Existing Customer
 
@@ -34,7 +34,7 @@ If the employee selects the option to access an existing customer, the employee 
 
 `Note`: The customer ID is a unique number that is associated with each individual customer. The intention is for the employee to get the customer ID either directly from the customer while on a call, or obtain the ID while viewing customer documents.
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/11259c1a-b7ec-4b10-a7bc-9aad2ddd8497" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/11259c1a-b7ec-4b10-a7bc-9aad2ddd8497" width="450">
 
 ### Customer Option Page 
 
@@ -42,7 +42,7 @@ Once a valid customer ID is entered, the employee will have the options to eithe
 
 `Note`: The current customer ID is now displayed in the top left corner
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/f5f24cca-25da-4f0c-95fe-8094bd1c3b06" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/f5f24cca-25da-4f0c-95fe-8094bd1c3b06" width="450">
 
 ### Viewing Customer Information
 
@@ -51,27 +51,27 @@ The user can press “edit customer information” to modify this information. A
 
 `Note`: For the purposes of this application, the total cost will reset when the customer information is changed. This is to account for the updated energy tariff that gets applied
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/62a4bbe9-ac43-4c2b-abdc-a2edfb0b0329" width="600">
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/48f7ceda-ce67-4dcd-ae25-162ea674dbad" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/62a4bbe9-ac43-4c2b-abdc-a2edfb0b0329" width="450">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/48f7ceda-ce67-4dcd-ae25-162ea674dbad" width="450">
 
 ### Processing a Payment
 
 If the employee selects “process payment,” they will be brought to a screen where either a partial payment can be entered or a full payment can be made
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/6851f7b9-cf02-4c01-bbd2-93fde56244cc" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/6851f7b9-cf02-4c01-bbd2-93fde56244cc" width="450">
 
 ### Viewing Energy Usage
 
 If the employee selects “view energy usage,” a breakdown on the energy usage is given
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fa88084c-dfe0-4ed4-abe7-45f2d20e47c8" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fa88084c-dfe0-4ed4-abe7-45f2d20e47c8" width="450">
 
 ### Sending An Invoice
 
 If the employee selects “send invoice,” they will be brought to a page with a default email to the customer which includes the monthly bill prepared. The employee has the option to edit this email. Pressing “send” will create a pdf of the invoice and send an email.
 
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/3d822631-0717-4e1b-acde-c4fa79a9d854" width="600">
-<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/b53f01e9-cd55-43a2-9a4b-55f089ed637e" width="600">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/3d822631-0717-4e1b-acde-c4fa79a9d854" width="450">
+<img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/b53f01e9-cd55-43a2-9a4b-55f089ed637e" width="450">
 
 ## Setup
 
