@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="java">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../metrics-release-4.2.x/metrics-release-4.2.x/metrics-core/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../metrics-release-4.2.x/metrics-release-4.2.x/metrics-core/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

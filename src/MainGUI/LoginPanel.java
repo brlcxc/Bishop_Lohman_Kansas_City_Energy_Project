@@ -1,10 +1,8 @@
-package PopUpPanels;
+package MainGUI;
 
 import GUIDefaults.Colors;
 import GUIDefaults.DefaultButton;
 import Logic.SQLConnection;
-import MainGUI.PrimaryPanel;
-import MainGUI.MenuBar;
 
 import javax.swing.*;
 import java.awt.*;

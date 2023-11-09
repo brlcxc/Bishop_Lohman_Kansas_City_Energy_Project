@@ -1,9 +1,6 @@
 package MainGUI;
 
 import Logic.SQLConnection;
-import MainGUI.*;
-import MainGUI.MenuBar;
-import PopUpPanels.LoginPanel;
 
 import javax.swing.*;
 import java.awt.*;
