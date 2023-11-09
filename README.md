@@ -9,6 +9,8 @@ On the login page there are fields to enter a username and password with a butto
 
 `Note`: For the purposes of this application, the username and password will be the same as the credentials needed to access the connected database
 
+![image](https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fe390360-af7d-4b29-b7ac-ee8b40d0b3e2)
+
 ### Employee Option Page
 
 The next page has an option to access an existing customer as well as the option to create a new customer profile. 
