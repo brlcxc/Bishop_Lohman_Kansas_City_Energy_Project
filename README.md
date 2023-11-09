@@ -15,13 +15,13 @@ On the login page there are fields to enter a username and password with a butto
 
 The next page has an option to access an existing customer as well as the option to create a new customer profile. 
 
-`Note`: The employee username along with an option to sign out are now displayed in the top right corner. These will remain in place until the employee signs out. Pressing “sign out” will bring the employee back to the login page 
+`Note`: The employee username along with an option to sign out are now displayed in the top right corner. These will remain in place until the employee signs out. Pressing “Sign Out” will bring the employee back to the login page 
 
 <img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/6aee9dce-5970-489b-9473-76b86903e98f" width="450">
 
 ### Creating a New Customer Profile
 
-If the employee selects the option to create a new user profile, they will be directed to a page where the customer demographics, as well as some energy information, can be input. Once the employee presses “confirm,” a customer ID is assigned to that customer
+If the employee selects the option to create a new user profile, they will be directed to a page where the customer demographics, as well as some energy information, can be input. Once the employee presses “Confirm,” a customer ID is assigned to that customer.
 
 `Note`: For the purposes of this application a random energy usage is selected.
 
@@ -38,7 +38,7 @@ If the employee selects the option to access an existing customer, the employee 
 
 ### Customer Option Page 
 
-Once a valid customer ID is entered, the employee will have the options to either view customer information, process a payment, delete the customer profile, view the energy usage, send an invoice, or exit the customer page. If the user presses the back arrow, they will be brought back  to the prior screen that has an option to access an existing customer as well as the option to create a new customer profile
+Once a valid customer ID is entered, the employee will have the options to either view customer information, process a payment, delete the customer profile, view the energy usage, send an invoice, or exit the customer page. If the user presses the back arrow, they will be brought back  to the prior screen that has an option to access an existing customer as well as the option to create a new customer profile.
 
 `Note`: The current customer ID is now displayed in the top left corner
 
@@ -46,7 +46,7 @@ Once a valid customer ID is entered, the employee will have the options to eithe
 
 ### Viewing Customer Information
 
-If the employee presses “view customer information,” they will be brought to a screen with the customer’s demographic data as well as the energy tariff and meter type.
+If the employee presses “View Customer Information,” they will be brought to a screen with the customer’s demographic data as well as the energy tariff and meter type.
 The user can press “edit customer information” to modify this information. Another screen will appear with fields for the data which can be edited.
 
 `Note`: For the purposes of this application, the total cost will reset when the customer information is changed. This is to account for the updated energy tariff that gets applied
@@ -56,19 +56,19 @@ The user can press “edit customer information” to modify this information. A
 
 ### Processing a Payment
 
-If the employee selects “process payment,” they will be brought to a screen where either a partial payment can be entered or a full payment can be made
+If the employee selects “Process Payment,” they will be brought to a screen where either a partial payment can be entered or a full payment can be made
 
 <img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/6851f7b9-cf02-4c01-bbd2-93fde56244cc" width="450">
 
 ### Viewing Energy Usage
 
-If the employee selects “view energy usage,” a breakdown on the energy usage is given
+If the employee selects “View Energy Usage,” a breakdown on the energy usage is given
 
 <img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/fa88084c-dfe0-4ed4-abe7-45f2d20e47c8" width="450">
 
 ### Sending An Invoice
 
-If the employee selects “send invoice,” they will be brought to a page with a default email to the customer which includes the monthly bill prepared. The employee has the option to edit this email. Pressing “send” will create a pdf of the invoice and send an email.
+If the employee selects “Send Invoice,” they will be brought to a page with a default email to the customer which includes the monthly bill prepared. The employee has the option to edit this email. Pressing “send” will create a pdf of the invoice and send an email.
 
 <img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/3d822631-0717-4e1b-acde-c4fa79a9d854" width="450">
 <img src="https://github.com/brlcxc/Bishop_Lohman_Kansas_City_Energy_Project/assets/90850429/b53f01e9-cd55-43a2-9a4b-55f089ed637e" width="450">
@@ -80,6 +80,10 @@ If the employee selects “send invoice,” they will be brought to a page with 
 For the application to be run, a database needs to be connected. For this project, MySQL was used in combination with the Database Navigator plugin on Intellij. To initialize the database, the file named “CustomerData.sql” within the Logic package was selected and run within MySQL. From there, that database was connected to the project with the Database Navigator plugin.
 
 ### Sending Emails
-The application sends emails via the MailUtil class. This code is set up to send emails from my personal email. For security purposes, the password to my email has been removed from the code. To use this feature with another Gmail account, the account will have to be set up properly and the information from it needs to be brought into the code 
+The application sends emails via the MailUtil class. This code is set up to send emails from my personal email. For security purposes, the password to my email has been removed from the code. To use this feature with another Gmail account, the account will have to be set up properly and the information from it needs to be brought into the code.
 
-### Development 
+## Development 
+
+### To-Do
+- `Code Coverage`: More tests need to be created to cover the code. In particular more methods from the logic section need to be tested
+- `User Metrics`: To improve the program some sort of user metric monitoring should be added. This will show what features might need to be changed based off how often they are used. I intend to use the DropWizard module to implement this
