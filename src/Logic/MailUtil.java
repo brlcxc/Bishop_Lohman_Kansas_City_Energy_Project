@@ -22,7 +22,8 @@ import javax.mail.internet.MimeMultipart;
 public class MailUtil {
     private String SMTP_HOST = "smtp.gmail.com";
     private String FROM_ADDRESS = "lohmanbishop@gmail.com";
-    private String PASSWORD = "qwqe ygic ihoc ymjg";
+    //password removed for safety
+    private String PASSWORD = "";
     private String FROM_NAME = "Bishop";
     public boolean sendMail(String[] recipients, String subject, String message) {
         try {
